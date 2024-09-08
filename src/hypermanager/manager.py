@@ -96,6 +96,15 @@ class HyperManager:
             transactions_df = pl.from_arrow(data.data.transactions)
             blocks_df = pl.from_arrow(data.data.blocks)
 
+            # Check for empty data and handle the case gracefully
+            if (
+                decoded_logs_df.is_empty()
+                and logs_df.is_empty()
+                and transactions_df.is_empty()
+                and blocks_df.is_empty()
+            ):
+                raise ValueError("All queries returned empty results.")
+
             txs_blocks_df = transactions_df.join(
                 blocks_df.select(
                     "number",
@@ -109,31 +118,7 @@ class HyperManager:
                 suffix="_block",
             )
 
-        if decoded_logs_df.is_empty() or logs_df.is_empty():
-            # If both decoded_logs_df and logs_df are empty
-            if txs_blocks_df.is_empty():
-                return None  # All three DataFrames are empty
-            else:
-                # Return txs_blocks_df if it's not empty
-                return txs_blocks_df.select(
-                    "hash",
-                    "block_number",
-                    "to",
-                    "from",
-                    "nonce",
-                    "type",
-                    "block_hash",
-                    "timestamp",
-                    "base_fee_per_gas",
-                    "gas_used_block",
-                    "parent_beacon_block_root",
-                    "max_priority_fee_per_gas",
-                    "max_fee_per_gas",
-                    "effective_gas_price",
-                    "gas_used",
-                )
-
-        if tx_data:
+        if tx_data:  # include tx and block data to the result
             result_df = (
                 decoded_logs_df.hstack(logs_df.select("transaction_hash"))
                 .rename({"transaction_hash": "hash"})
