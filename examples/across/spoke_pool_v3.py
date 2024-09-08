@@ -6,8 +6,13 @@ from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 from hypermanager.manager import HyperManager
 from hypersync import ColumnMapping, DataType
 
-contract: str = "0x09aea4b2242abC8bb4BB78D537A67a245A7bEC64"
-hypersync_client: str = "https://base.hypersync.xyz"
+# base https://docs.across.to/reference/contract-addresses/base-chain-id-8453
+# contract: str = "0x09aea4b2242abC8bb4BB78D537A67a245A7bEC64"
+# hypersync_client: str = "https://base.hypersync.xyz"
+
+# optimism https://optimistic.etherscan.io/address/0x6f26Bf09B1C792e3228e5467807a900A503c0281
+contract: str = "0x6f26Bf09B1C792e3228e5467807a900A503c0281"
+hypersync_client: str = "https://optimism.hypersync.xyz"
 
 # List of event configurations
 event_configs = [
@@ -78,7 +83,7 @@ async def get_events():
     for event_config in event_configs:
         try:
             df: pl.DataFrame = await manager.execute_event_query(
-                event_config, save_data=False, block_range=20_000
+                event_config, save_data=False, block_range=20_000, tx_data=False
             )
 
             # Check if the DataFrame is empty
