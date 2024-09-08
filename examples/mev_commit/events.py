@@ -10,10 +10,9 @@
 #    - Events from a specific block onward.
 #    - Events within a recent block range.
 
-import asyncio  # Required for asynchronous execution
-import polars as pl  # Polars for DataFrame operations
+import asyncio
+import polars as pl
 
-# Import the necessary components from hypermanager and hypersync libraries
 from hypermanager.events import EventConfig
 from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 from hypermanager.manager import HyperManager
@@ -22,19 +21,17 @@ from hypersync import ColumnMapping, DataType
 # Define the configuration for the "UnopenedCommitmentStored" event.
 # This includes its signature, the contract address, and how the event data should be processed.
 unopened_commitment_event = EventConfig(
-    name="UnopenedCommitmentStored",  # Human-readable name of the event
+    name="UnopenedCommitmentStored",
     signature=(
         "UnopenedCommitmentStored(bytes32 indexed commitmentIndex,"
         "address committer,bytes32 commitmentDigest,bytes commitmentSignature,"
         "uint64 dispatchTimestamp)"
-    ),  # Signature that defines the structure of the event
-    contract="0xCAC68D97a56b19204Dd3dbDC103CB24D47A825A3".lower(),  # Contract address (in lowercase)
+    ),
+    contract="0xCAC68D97a56b19204Dd3dbDC103CB24D47A825A3",
     column_mapping=ColumnMapping(
-        decoded_log={
-            "dispatchTimestamp": DataType.UINT64
-        },  # Map event-specific fields to their data types
-        transaction=COMMON_TRANSACTION_MAPPING,  # Common transaction fields mapping
-        block=COMMON_BLOCK_MAPPING,  # Common block fields mapping
+        decoded_log={"dispatchTimestamp": DataType.UINT64},
+        transaction=COMMON_TRANSACTION_MAPPING,
+        block=COMMON_BLOCK_MAPPING,
     ),
 )
 
