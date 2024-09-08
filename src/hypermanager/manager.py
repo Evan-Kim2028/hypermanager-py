@@ -1,5 +1,6 @@
 import polars as pl
 from typing import List, Optional
+from functools import lru_cache
 import hypersync
 
 from dataclasses import dataclass, field
@@ -26,6 +27,7 @@ class HyperManager:
         """Initialize the Hypersync client after the dataclass is instantiated."""
         self.client = hypersync.HypersyncClient(hypersync.ClientConfig(url=self.url))
 
+    @lru_cache(maxsize=128)
     async def get_height(self) -> int:
         """
         Get the current block height from the blockchain.
