@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class NetworkClient(Enum):
+class HyperSyncClients(Enum):
     ARBITRUM = ("https://arbitrum.hypersync.xyz", 42161, "gold")
     ARBITRUM_NOVA = ("https://arbitrum-nova.hypersync.xyz", 42170, "gold")
     ARBITRUM_SEPOLIA = ("https://arbitrum-sepolia.hypersync.xyz", 421614, "gold")

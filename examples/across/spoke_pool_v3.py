@@ -2,17 +2,18 @@ import asyncio
 import polars as pl
 
 from hypermanager.events import EventConfig
+from hypermanager.networks import HyperSyncClients
 from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 from hypermanager.manager import HyperManager
 from hypersync import ColumnMapping, DataType
 
 # base https://docs.across.to/reference/contract-addresses/base-chain-id-8453
 # contract: str = "0x09aea4b2242abC8bb4BB78D537A67a245A7bEC64"
-# hypersync_client: str = "https://base.hypersync.xyz"
+# hypersync_client: str = HyperSyncClients.BASE.client
 
 # optimism https://optimistic.etherscan.io/address/0x6f26Bf09B1C792e3228e5467807a900A503c0281
 contract: str = "0x6f26Bf09B1C792e3228e5467807a900A503c0281"
-hypersync_client: str = "https://optimism.hypersync.xyz"
+hypersync_client: str = HyperSyncClients.OPTIMISM.client
 
 # List of event configurations
 event_configs = [
