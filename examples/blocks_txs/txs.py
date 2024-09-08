@@ -9,7 +9,7 @@ hypersync_client: str = "https://eth.hypersync.xyz"
 async def get_events():
     manager = HyperManager(url=hypersync_client)
 
-    df: pl.DataFrame = await manager.get_blocks(block_range=100)
+    df: pl.DataFrame = await manager.get_txs(block_range=100)
 
     print(df.head(5))
 
