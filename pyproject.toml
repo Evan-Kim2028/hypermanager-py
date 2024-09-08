@@ -1,0 +1,28 @@
+[project]
+name = "hypermanager"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Evan-Kim2028", email = "ekcopersonal@gmail.com" }
+]
+dependencies = [
+    "hypersync>=0.8.3",
+    "polars>=1.6.0",
+    "pyarrow>=17.0.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hypermanager"]

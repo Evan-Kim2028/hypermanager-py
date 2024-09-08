@@ -1,0 +1,45 @@
+version = 1
+requires-python = ">=3.8"
+
+[[package]]
+name = "hypermanager-py"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "hypersync" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "hypersync", specifier = ">=0.4.0" }]
+
+[[package]]
+name = "hypersync"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/e9/06c16b2e5f5059da39686fc4e5834ae947aca4aa489e6edf11048bdd1ec3/hypersync-0.4.0.tar.gz", hash = "sha256:0b6fcfeeabd91c90ebf71d29899fba63182256dbd4f0141ea660f0b80e66f28f", size = 44286 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cc/7a/d415aa28a89fab93bc9739ae738b17a87377bf7b8e1c03146ada3e0041e1/hypersync-0.4.0-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:4fa33fb43bd60f87f1b32abe4d01a8fa729b64e34cb1c784de09ba8b3582f8e1", size = 5508028 },
+    { url = "https://files.pythonhosted.org/packages/3f/80/f1db1bb0394b86ad5a79fe315bbbf66c76d78002599236bb61150fe4d646/hypersync-0.4.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:1efaf5245b13d420e51b56dafec4b56b379dd77a8f44fae4b6a4fb710a3d0b9d", size = 5172923 },
+    { url = "https://files.pythonhosted.org/packages/52/f4/eb5859b5e4f9236ded8b3cf2f1a93945a6295c1cd25e0e1fd88d42a024f3/hypersync-0.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:62bfb8fa7391355427232309f02f6e70ab74b244c983a813f4e6ffa5392f97c5", size = 7276185 },
+    { url = "https://files.pythonhosted.org/packages/f2/dd/8b40a14d84b155669ffff1e435e66185df2940fe8750e4205cde355ad734/hypersync-0.4.0-cp310-none-win32.whl", hash = "sha256:a53baf249e819604ee5f4f31648386b70dd2e8d6827cfad1e39479784245822d", size = 4230040 },
+    { url = "https://files.pythonhosted.org/packages/70/8e/ca0405af9530c481718a35da66c3c6df88ef3b16886f0db9433dd64df5f9/hypersync-0.4.0-cp310-none-win_amd64.whl", hash = "sha256:76e627df521fb9154407bbf94382dc7c15f6fe66194ca7f3fcf6d86027c55d43", size = 4798306 },
+    { url = "https://files.pythonhosted.org/packages/3c/af/56c33598d285231260212dfe1e4f875efff5db16a5a2e329c1fa5e9cc444/hypersync-0.4.0-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:5ef28c32e8e1e825b8a6b26ba40591b3ec783a7f81968bbba9bb12e41d18087b", size = 5507303 },
+    { url = "https://files.pythonhosted.org/packages/53/f4/82e6985a851caf0fa40777785dbe9abfa873b5d97def018f701bc04b0da6/hypersync-0.4.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c63839a6ed915ab2722d25313ec2d2b7aea817f591131766f03a2f7d9364ddae", size = 5174324 },
+    { url = "https://files.pythonhosted.org/packages/8b/e4/07ecb0fdf38c8ee0b1f9d4d969de4a937dae34b2980796c26b31b2cf2fd2/hypersync-0.4.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7ca0cba5cf8ad3fc0e2270c37e3bbe31b4552f40e87404b5101f90b92687476c", size = 7276460 },
+    { url = "https://files.pythonhosted.org/packages/45/3d/9b54a31e7ae0e63e546683c88f73e43eb094e8c410e092db4372994d3606/hypersync-0.4.0-cp311-none-win32.whl", hash = "sha256:7fcaf8c9275d21b806203bb2c0899d08dc3988e312023356c24c631ea693a4fa", size = 4230680 },
+    { url = "https://files.pythonhosted.org/packages/0d/25/5a6720e3012e67ca852ef358eeac0a13b40642ccb1e3e5b6e1db7cbec5f2/hypersync-0.4.0-cp311-none-win_amd64.whl", hash = "sha256:b0c06f203537fb6160b3cd3eb13cae63c0e5a17e42558bee2d3977f2a1718a73", size = 4798233 },
+    { url = "https://files.pythonhosted.org/packages/5a/22/c1019c1fada168aa85ac9dabcadd19497f712f3813a6d158b8aa6998a04d/hypersync-0.4.0-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:1637bcc970ebdbe5f94502125ec30cecef8e44cecf5dbe6124c7f2ab0d063f11", size = 5507658 },
+    { url = "https://files.pythonhosted.org/packages/b1/a7/846b3e495a95981e8f80275d555f26766118feffafabd5b56858a727cdec/hypersync-0.4.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:c2129c592367bf5052961732d0d6dd9ed1899546a378022613f5a663681ac53e", size = 5173590 },
+    { url = "https://files.pythonhosted.org/packages/d1/6d/993c484ea953b09c318bd742daff9d677d2b9c3e64ca50dcf1710fb2852b/hypersync-0.4.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:96abb872905a8ee4554277c26f9d1ceb5377663f230abb82e601e184dbd00186", size = 7277597 },
+    { url = "https://files.pythonhosted.org/packages/c8/5c/34c5d9f913556da2cc84e40d5039d0f21f755dbea017c89b46d076d409ee/hypersync-0.4.0-cp312-none-win32.whl", hash = "sha256:9e0251a917fb2494a209c31404fb7ddd7bd0d8e7aaa238ef2fca3ff75afd7417", size = 4231924 },
+    { url = "https://files.pythonhosted.org/packages/e6/e8/8d5d32635aaee8d4fbc4069b595bb2ff0337dfdd334a5acbe558a685b118/hypersync-0.4.0-cp312-none-win_amd64.whl", hash = "sha256:b9c285d5b7169b5eecb1c35f0fd2846adf26e2d17221550cc22d4f4a0f0e84e5", size = 4797202 },
+    { url = "https://files.pythonhosted.org/packages/6f/04/e35466b4cacf69adc7ac853aa15e63711b7321955365d7537811d3f4762d/hypersync-0.4.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9bb51dcce3188961d2b849eaeee11ff3f3ec1640133a258191f8a5c78778b3fe", size = 7276509 },
+    { url = "https://files.pythonhosted.org/packages/d2/37/bde2b1724203b3386e9d36ea86089215ad99c8bbaacba9f573da6012cbd7/hypersync-0.4.0-cp38-none-win32.whl", hash = "sha256:82eaa647547d3f4ade067e2af49e64748ef192c2c5a6489c9032970d8d2f2993", size = 4231122 },
+    { url = "https://files.pythonhosted.org/packages/94/0c/bc583ea7d21b818ee2a37127c9d40974cdfab1cd3b86bba6e778604e2ea5/hypersync-0.4.0-cp38-none-win_amd64.whl", hash = "sha256:3a587d0a1bee9825ddf3728c13fe9f03b7a53d1cbbc402775f7e2a937fb2787b", size = 4799010 },
+    { url = "https://files.pythonhosted.org/packages/c6/2d/b9d9c49a4ccf599a01beb1dd8eee75c17230654407771151e85d840def85/hypersync-0.4.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:617297b689440a3b39ed7afbcf3c28b3adba65d2ddc9e78b4b8d0855ec8d7601", size = 7276573 },
+    { url = "https://files.pythonhosted.org/packages/96/ac/e8a84b31b0051a10d929c21e3d336ea718b471ca6e0429b11ae2031d328d/hypersync-0.4.0-cp39-none-win32.whl", hash = "sha256:4a8fe42d0a232c657bf7657d0aa11791eec86c1156e5dfa10f0e7a94b2a43a5c", size = 4229856 },
+    { url = "https://files.pythonhosted.org/packages/b5/81/06b2f67724dd4096fe7c65833362f86f90966c467e416f110ca36f040db0/hypersync-0.4.0-cp39-none-win_amd64.whl", hash = "sha256:8c13109791966a8c4ef84719b60633e88d2130b2cc3df8c26dbf2ff8cdc387c0", size = 4798518 },
+    { url = "https://files.pythonhosted.org/packages/7b/98/530f3df0513e9f83efd3be8b64d25df22eb9e8bb223540b3718095c2b38c/hypersync-0.4.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f757f6cf68bbaacb0d71bbd4eaba2c2d223d2f8423f9c5377ffcf515e95e79ba", size = 7278026 },
+    { url = "https://files.pythonhosted.org/packages/55/db/fbca3119bedebdfa5cf42d98ace4a98fffed7238cfc5dd9bbb54929fe47f/hypersync-0.4.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:917c50a39af3eaf009f65e778b0ed1975ba08d73bd225be3b9c2b8ca4b40af69", size = 7277590 },
+    { url = "https://files.pythonhosted.org/packages/69/81/25f1971ee820a6de26928dd98e82ca8f1340a0bdb556aeffa3f3c8f83876/hypersync-0.4.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f22eee6ca30010e46baf8a167608cb04b873706319316b1b801c101c3ae21a8d", size = 7277958 },
+]
