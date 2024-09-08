@@ -76,7 +76,7 @@ class HyperManager:
         tx_data: bool = False,
     ) -> Optional[pl.DataFrame]:
         """
-        Collect data using the Hypersync client and return it as a Polars DataFrame or save it as a parquet file.
+        Collect logs data using the Hypersync client and return it as a Polars DataFrame or save it as a parquet file.
 
         Args:
             query (hypersync.Query): The query object to execute.
@@ -118,7 +118,31 @@ class HyperManager:
                 suffix="_block",
             )
 
-        if tx_data:  # include tx and block data to the result
+        if decoded_logs_df.is_empty() or logs_df.is_empty():
+            # If both decoded_logs_df and logs_df are empty
+            if txs_blocks_df.is_empty():
+                return None  # All three DataFrames are empty
+            else:
+                # Return txs_blocks_df if it's not empty
+                return txs_blocks_df.select(
+                    "hash",
+                    "block_number",
+                    "to",
+                    "from",
+                    "nonce",
+                    "type",
+                    "block_hash",
+                    "timestamp",
+                    "base_fee_per_gas",
+                    "gas_used_block",
+                    "parent_beacon_block_root",
+                    "max_priority_fee_per_gas",
+                    "max_fee_per_gas",
+                    "effective_gas_price",
+                    "gas_used",
+                )
+
+        if tx_data:
             result_df = (
                 decoded_logs_df.hstack(logs_df.select("transaction_hash"))
                 .rename({"transaction_hash": "hash"})
@@ -267,7 +291,7 @@ class HyperManager:
         return result
 
     @timer
-    async def get_blocks_txs(
+    async def get_txs(
         self,
         from_block: Optional[int] = None,
         to_block: Optional[int] = None,
@@ -291,20 +315,13 @@ class HyperManager:
         """
         block_range_dict = await self.get_block_range(from_block, to_block, block_range)
 
-        if blocks_only:
-            query = self.create_query(
-                from_block=block_range_dict["from_block"],
-                to_block=block_range_dict["to_block"],
-                logs=[],
-                transactions=[],
-            )
-        else:
-            query = self.create_query(
-                from_block=block_range_dict["from_block"],
-                to_block=block_range_dict["to_block"],
-                logs=[],
-                transactions=[hypersync.TransactionSelection()],
-            )
+        query = self.create_query(
+            from_block=block_range_dict["from_block"],
+            to_block=block_range_dict["to_block"],
+            logs=[],
+            blocks=[hypersync.BlockSelection()],
+            transactions=[hypersync.TransactionSelection()],
+        )
 
         config = hypersync.StreamConfig(
             hex_output=hypersync.HexOutput.PREFIXED,
