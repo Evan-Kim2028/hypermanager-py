@@ -10,22 +10,34 @@ from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 from hypermanager.events import EventConfig
 
 
+# @dataclass
+# class HyperManager:
+#     """
+#     A client wrapper around Hypersync Indexer to query transactions, blocks, and events from the blockchain.
+
+#     Attributes:
+#         url (str): The URL of the Hypersync service.
+#         client (hypersync.HypersyncClient): The Hypersync client instance, initialized in __post_init__.
+#     """
+
+#     url: str
+#     client: hypersync.HypersyncClient = field(init=False)
+
+# def __post_init__(self):
+#     """Initialize the Hypersync client after the dataclass is instantiated."""
+#     self.client = hypersync.HypersyncClient(hypersync.ClientConfig(url=self.url))
+
+
 @dataclass
 class HyperManager:
-    """
-    A client wrapper around Hypersync Indexer to query transactions, blocks, and events from the blockchain.
-
-    Attributes:
-        url (str): The URL of the Hypersync service.
-        client (hypersync.HypersyncClient): The Hypersync client instance, initialized in __post_init__.
-    """
-
     url: str
     client: hypersync.HypersyncClient = field(init=False)
 
     def __post_init__(self):
-        """Initialize the Hypersync client after the dataclass is instantiated."""
         self.client = hypersync.HypersyncClient(hypersync.ClientConfig(url=self.url))
+
+    def __hash__(self):
+        return hash(self.url)  # Make the object hashable based on URL
 
     @lru_cache(maxsize=128)
     async def get_height(self) -> int:
@@ -78,7 +90,7 @@ class HyperManager:
         tx_data: bool = False,
     ) -> Optional[pl.DataFrame]:
         """
-        Collect logs data using the Hypersync client and return it as a Polars DataFrame or save it as a parquet file.
+        Collect logs data using the Hypersync client and return it as a Polars DataFrame or save it as a parquet file in a "data" folder.
 
         Args:
             query (hypersync.Query): The query object to execute.
