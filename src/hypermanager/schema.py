@@ -14,7 +14,7 @@ COMMON_TRANSACTION_MAPPING = {
     TransactionField.GAS_PRICE: DataType.FLOAT64,
 }
 
-COMMMON_BLOCK_MAPPING = {
+COMMON_BLOCK_MAPPING = {
     BlockField.TIMESTAMP: DataType.UINT64,
     BlockField.BASE_FEE_PER_GAS: DataType.FLOAT64,
     BlockField.GAS_USED: DataType.UINT64,
