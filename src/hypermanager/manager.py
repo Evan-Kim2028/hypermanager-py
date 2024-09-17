@@ -122,6 +122,7 @@ class HyperManager:
             txs_blocks_df = transactions_df.join(
                 blocks_df.select(
                     "number",
+                    "extra_data",
                     "timestamp",
                     "base_fee_per_gas",
                     "gas_used",
@@ -141,6 +142,7 @@ class HyperManager:
                 return txs_blocks_df.select(
                     "hash",
                     "block_number",
+                    "extra_data",
                     "to",
                     "from",
                     "nonce",
@@ -165,6 +167,7 @@ class HyperManager:
                     txs_blocks_df.select(
                         "hash",
                         "block_number",
+                        "extra_data",
                         "to",
                         "from",
                         "nonce",
