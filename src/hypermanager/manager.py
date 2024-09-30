@@ -180,6 +180,7 @@ class HyperManager:
                         "max_fee_per_gas",
                         "effective_gas_price",
                         "gas_used",
+                        "chain_id",
                     ),
                     on="hash",
                     how="left",
