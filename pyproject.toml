@@ -1,6 +1,6 @@
 [project]
 name = "hypermanager"
-version = "0.1.1"
+version = "0.1.2"
 description = "Add your description here"
 authors = [
     { name = "Evan-Kim2028", email = "ekcopersonal@gmail.com" }
