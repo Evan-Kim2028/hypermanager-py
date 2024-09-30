@@ -44,11 +44,13 @@ base_event_configs = [
         ),
         "column_mapping": ColumnMapping(
             decoded_log={
-                # "inputAmount": DataType.INT64,
-                # "outputAmount": DataType.INT64,
-                "quoteTimestamp": DataType.INT32,
-                "fillDeadline": DataType.UINT32,
-                "exclusivityDeadline": DataType.INT32,
+                "inputAmount": DataType.FLOAT64,
+                "outputAmount": DataType.FLOAT64,
+                "quoteTimestamp": DataType.INT64,
+                "fillDeadline": DataType.UINT64,
+                "exclusivityDeadline": DataType.INT64,
+                "destinationChainId": DataType.UINT64,
+                "depositId": DataType.UINT64,
             },
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
@@ -62,7 +64,10 @@ base_event_configs = [
             "bytes depositorSignature)"
         ),
         "column_mapping": ColumnMapping(
-            decoded_log={"updatedOutputAmount": DataType.INT64},
+            decoded_log={
+                "updatedOutputAmount": DataType.INT64,
+                "depositId": DataType.UINT64,
+            },
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
         ),
@@ -78,13 +83,14 @@ base_event_configs = [
         ),
         "column_mapping": ColumnMapping(
             decoded_log={
-                # "inputAmount": DataType.INT64,
-                # "outputAmount": DataType.INT64,
-                "quoteTimestamp": DataType.INT32,
-                "fillDeadline": DataType.UINT32,
-                "exclusivityDeadline": DataType.INT32,
-                "originChainId": DataType.UINT32,
-                "repaymentChainId": DataType.UINT32,
+                "inputAmount": DataType.FLOAT64,
+                "outputAmount": DataType.FLOAT64,
+                "quoteTimestamp": DataType.INT64,
+                "fillDeadline": DataType.UINT64,
+                "exclusivityDeadline": DataType.INT64,
+                "originChainId": DataType.UINT64,
+                "repaymentChainId": DataType.UINT64,
+                "depositId": DataType.UINT64,
             },
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
@@ -99,6 +105,13 @@ base_event_configs = [
             "address depositor,address recipient,bytes message)"
         ),
         "column_mapping": ColumnMapping(
+            decoded_log={
+                "inputAmount": DataType.FLOAT64,
+                "outputAmount": DataType.FLOAT64,
+                "quoteTimestamp": DataType.INT32,
+                "fillDeadline": DataType.UINT64,
+                "originChainId": DataType.UINT64,
+            },
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
         ),
@@ -124,7 +137,7 @@ async def get_events():
 
                 # Query the events
                 df: pl.DataFrame = await manager.execute_event_query(
-                    event_config, save_data=False, tx_data=True
+                    event_config, save_data=False, tx_data=True, block_range=2_000_000
                 )
 
                 # Check if the DataFrame is empty
@@ -137,10 +150,8 @@ async def get_events():
                 # Process the non-empty DataFrame
                 print(f"Events found for {event_config.name} on {client.name}:")
                 print(df.shape)
-                # print(df.schema)
-                print(df.head(5))
                 # Create the folder if it doesn't exist
-                folder_path = f"across/data/{client.name}"
+                folder_path = f"data/across/{client.name}"
                 if not os.path.exists(folder_path):
                     os.makedirs(folder_path)
 
@@ -152,6 +163,3 @@ async def get_events():
 
 if __name__ == "__main__":
     asyncio.run(get_events())
-
-
-# 1gb, 6:42pm
