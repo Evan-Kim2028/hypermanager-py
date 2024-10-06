@@ -7,23 +7,24 @@ from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 @dataclass
 class EventConfig:
     """
-    Represents the configuration for a specific event in the system.
+    Represents the configuration for a specific log event.
 
-    This configuration includes the event name, its signature, the contract address,
-    and an optional column mapping. The column mapping defines how the event's
+    This configuration includes the event name, its signature, the optional contract
+    address, and an optional column mapping. The column mapping defines how the event's
     transaction and block data should be processed.
 
     Attributes:
         name (str): The human-readable name of the event.
         signature (str): The unique event signature (usually a hashed method/event name).
-        contract (str): The contract address associated with the event.
+        contract (Optional[str]): The contract address associated with the event. If None,
+            no contract address is required or used. Defaults to None.
         column_mapping (Optional[hypersync.ColumnMapping]): A mapping of columns for
             transaction and block data. Defaults to a common column mapping if not provided.
     """
 
     name: str
     signature: str
-    contract: str
+    contract: Optional[str] = None
     column_mapping: Optional[hypersync.ColumnMapping] = None
 
     def __post_init__(self):
@@ -37,8 +38,9 @@ class EventConfig:
         if self.column_mapping is None:
             self.column_mapping = self.get_default_column_mapping()
 
-        # Ensure contract is lowercase
-        self.contract = self.contract.lower()
+        # Ensure contract is lowercase if it is not None
+        if self.contract is not None:
+            self.contract = self.contract.lower()
 
     def get_topic(self) -> str:
         """
