@@ -1,15 +1,9 @@
 [project]
 name = "hypermanager"
-version = "0.1.3"
+version = "0.1.4"
 description = "Add your description here"
-authors = [
-    { name = "Evan-Kim2028", email = "ekcopersonal@gmail.com" }
-]
-dependencies = [
-    "hypersync>=0.8.3",
-    "polars>=1.6.0",
-    "pyarrow>=17.0.0",
-]
+authors = [{ name = "Evan-Kim2028", email = "ekcopersonal@gmail.com" }]
+dependencies = ["hypersync>=0.8.3", "polars>=1.6.0", "pyarrow>=17.0.0"]
 readme = "README.md"
 requires-python = ">= 3.8"
 
