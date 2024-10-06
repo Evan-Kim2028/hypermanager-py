@@ -10,31 +10,14 @@ from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 from hypermanager.events import EventConfig
 
 
-# @dataclass
-# class HyperManager:
-#     """
-#     A client wrapper around Hypersync Indexer to query transactions, blocks, and events from the blockchain.
-
-#     Attributes:
-#         url (str): The URL of the Hypersync service.
-#         client (hypersync.HypersyncClient): The Hypersync client instance, initialized in __post_init__.
-#     """
-
-#     url: str
-#     client: hypersync.HypersyncClient = field(init=False)
-
-# def __post_init__(self):
-#     """Initialize the Hypersync client after the dataclass is instantiated."""
-#     self.client = hypersync.HypersyncClient(hypersync.ClientConfig(url=self.url))
-
-
 @dataclass
 class HyperManager:
     url: str
     client: hypersync.HypersyncClient = field(init=False)
 
     def __post_init__(self):
-        self.client = hypersync.HypersyncClient(hypersync.ClientConfig(url=self.url))
+        self.client = hypersync.HypersyncClient(
+            hypersync.ClientConfig(url=self.url))
 
     def __hash__(self):
         return hash(self.url)  # Make the object hashable based on URL
@@ -208,7 +191,8 @@ class HyperManager:
             dict[str, int]: A dictionary containing 'from_block' and 'to_block'.
         """
         to_block = to_block or await self.get_height()
-        from_block = from_block or (to_block - block_range if block_range else 0)
+        from_block = from_block or (
+            to_block - block_range if block_range else 0)
         return {"from_block": from_block, "to_block": to_block}
 
     def create_event_query(
@@ -239,11 +223,22 @@ class HyperManager:
         if address:
             topics.append([address_to_topic(address.lower())])
 
+        # handle the case where contract is not provided
+        if event_config.contract is None:
+            return self.create_query(
+                from_block=from_block,
+                to_block=to_block,
+                logs=[
+                    hypersync.LogSelection(topics=topics)
+                ],
+            )
+
         return self.create_query(
             from_block=from_block,
             to_block=to_block,
             logs=[
-                hypersync.LogSelection(address=[event_config.contract], topics=topics)
+                hypersync.LogSelection(
+                    address=[event_config.contract], topics=topics)
             ],
         )
 

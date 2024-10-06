@@ -19,6 +19,7 @@ async def get_events():
     # Iterate through relevant HyperSync clients and associated SpokePool addresses
     for client, spoke_pool_address in client_config.items():
         print(f"Querying events for {client.name}...")
+        print(f"address: {spoke_pool_address.value}")
         for base_event_config in base_event_configs:
             try:
                 # Create a fresh EventConfig and assign the contract at runtime
@@ -33,18 +34,20 @@ async def get_events():
 
                 # Query the events
                 df: pl.DataFrame = await manager.execute_event_query(
-                    event_config, save_data=False, tx_data=True, block_range=500
+                    event_config, save_data=False, tx_data=True, block_range=10_000
                 )
 
                 # Check if the DataFrame is empty
                 if df.is_empty():
                     print(
-                        f"No events found for {event_config.name} on {client.name}, continuing..."
+                        f"No events found for {event_config.name} on {
+                            client.name}, continuing..."
                     )
                     continue
 
                 # Process the non-empty DataFrame
-                print(f"Events found for {event_config.name} on {client.name}:")
+                print(f"Events found for {
+                      event_config.name} on {client.name}:")
                 print(df.shape)
 
                 # Create the folder if it doesn't exist
@@ -57,7 +60,8 @@ async def get_events():
                     f"{folder_path}/{event_config.name}_{client.name}.parquet"
                 )
             except Exception as e:
-                print(f"Error querying {event_config.name} on {client.name}: {e}")
+                print(f"Error querying {event_config.name} on {
+                      client.name}: {e}")
 
 
 if __name__ == "__main__":

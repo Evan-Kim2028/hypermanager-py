@@ -23,7 +23,7 @@ class EventConfig:
 
     name: str
     signature: str
-    contract: str
+    contract: Optional[str] = None
     column_mapping: Optional[hypersync.ColumnMapping] = None
 
     def __post_init__(self):
@@ -37,8 +37,9 @@ class EventConfig:
         if self.column_mapping is None:
             self.column_mapping = self.get_default_column_mapping()
 
-        # Ensure contract is lowercase
-        self.contract = self.contract.lower()
+        # Ensure contract is lowercase if it is not None
+        if self.contract is not None:
+            self.contract = self.contract.lower()
 
     def get_topic(self) -> str:
         """
