@@ -23,7 +23,7 @@ class HyperManager:
         return hash(self.url)  # Make the object hashable based on URL
 
     @lru_cache(maxsize=128)
-    async def get_height(self) -> int:
+    async def _get_height(self) -> int:
         """
         Get the current block height from the blockchain.
 
@@ -32,7 +32,7 @@ class HyperManager:
         """
         return await self.client.get_height()
 
-    def create_query(
+    def _create_query(
         self,
         from_block: int,
         to_block: int,
@@ -65,7 +65,7 @@ class HyperManager:
             ),
         )
 
-    async def collect_data(
+    async def _collect_data(
         self,
         query: hypersync.Query,
         config: hypersync.StreamConfig,
@@ -190,12 +190,12 @@ class HyperManager:
         Returns:
             dict[str, int]: A dictionary containing 'from_block' and 'to_block'.
         """
-        to_block = to_block or await self.get_height()
+        to_block = to_block or await self._get_height()
         from_block = from_block or (
             to_block - block_range if block_range else 0)
         return {"from_block": from_block, "to_block": to_block}
 
-    def create_event_query(
+    def _create_event_query(
         self,
         event_config: EventConfig,
         from_block: int,
@@ -204,6 +204,10 @@ class HyperManager:
     ) -> hypersync.Query:
         """
         Create a query for a specific event based on the event signature.
+
+        If the `contract` in the `EventConfig` class is None, then the query will use wildcard indexing to find the 
+        event logs. See docs here - https://docs.envio.dev/docs/HyperIndex/wildcard-indexing
+
 
         Args:
             event_signature (str): The event signature to query.
@@ -225,7 +229,7 @@ class HyperManager:
 
         # handle the case where contract is not provided
         if event_config.contract is None:
-            return self.create_query(
+            return self._create_query(
                 from_block=from_block,
                 to_block=to_block,
                 logs=[
@@ -233,7 +237,7 @@ class HyperManager:
                 ],
             )
 
-        return self.create_query(
+        return self._create_query(
             from_block=from_block,
             to_block=to_block,
             logs=[
@@ -257,6 +261,10 @@ class HyperManager:
         """
         Execute a query for a specific event by its signature and collect the data.
 
+        If the `contract` in the `EventConfig` class is None, then the query will use wildcard indexing to find the 
+        event logs. See docs here - https://docs.envio.dev/docs/HyperIndex/wildcard-indexing
+
+
         Args:
             event_name (str): The name of the event to query.
             from_block (Optional[int]): The starting block number for the query. Defaults to None, which will use the latest block.
@@ -277,7 +285,7 @@ class HyperManager:
         block_range_dict = await self.get_block_range(from_block, to_block, block_range)
 
         # Create the query object for the specified event
-        query = self.create_event_query(
+        query = self._create_event_query(
             event_config,
             block_range_dict["from_block"],
             block_range_dict["to_block"],
@@ -295,7 +303,7 @@ class HyperManager:
         )
 
         # Collect the data based on the query and configuration
-        result = await self.collect_data(query, config, save_data, tx_data=tx_data)
+        result = await self._collect_data(query, config, save_data, tx_data=tx_data)
 
         # Handle the case where no data is returned
         if result is None:
@@ -329,7 +337,7 @@ class HyperManager:
         """
         block_range_dict = await self.get_block_range(from_block, to_block, block_range)
 
-        query = self.create_query(
+        query = self._create_query(
             from_block=block_range_dict["from_block"],
             to_block=block_range_dict["to_block"],
             logs=[],
@@ -343,7 +351,7 @@ class HyperManager:
                 transaction=COMMON_TRANSACTION_MAPPING, block=COMMON_BLOCK_MAPPING
             ),
         )
-        return await self.collect_data(query, config, save_data)
+        return await self._collect_data(query, config, save_data)
 
     @timer
     async def search_txs(
@@ -365,7 +373,7 @@ class HyperManager:
 
         block_range_dict = await self.get_block_range(from_block=None)
 
-        query = self.create_query(
+        query = self._create_query(
             from_block=0,
             to_block=block_range_dict["to_block"],
             logs=[],
@@ -378,7 +386,7 @@ class HyperManager:
                 transaction=COMMON_TRANSACTION_MAPPING, block=COMMON_BLOCK_MAPPING
             ),
         )
-        return await self.collect_data(query, config, save_data)
+        return await self._collect_data(query, config, save_data)
 
     @timer
     async def get_blocks(
@@ -406,7 +414,7 @@ class HyperManager:
         block_range_dict = await self.get_block_range(from_block, to_block, block_range)
 
         # Create a query for blocks only
-        query = self.create_query(
+        query = self._create_query(
             from_block=block_range_dict["from_block"],
             to_block=block_range_dict["to_block"],
             logs=[],
