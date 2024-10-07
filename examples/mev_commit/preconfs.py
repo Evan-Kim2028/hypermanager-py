@@ -2,7 +2,7 @@ import asyncio
 import polars as pl
 from hypermanager.events import EventConfig
 from hypermanager.manager import HyperManager
-from hypermanager.protocols.mev_commit import base_event_configs
+from hypermanager.protocols.mev_commit import mev_commit_config
 
 
 async def get_events():
@@ -18,21 +18,21 @@ async def get_events():
     manager = HyperManager(url="https://mev-commit.hypersync.xyz")
 
     opened_commits_config = EventConfig(
-        name=base_event_configs["OpenedCommitmentStored"]["name"],
-        signature=base_event_configs["OpenedCommitmentStored"]["signature"],
-        column_mapping=base_event_configs["OpenedCommitmentStored"]["column_mapping"],
+        name=mev_commit_config["OpenedCommitmentStored"].name,
+        signature=mev_commit_config["OpenedCommitmentStored"].signature,
+        column_mapping=mev_commit_config["OpenedCommitmentStored"].column_mapping,
     )
 
     unopened_commits_config = EventConfig(
-        name=base_event_configs["UnopenedCommitmentStored"]["name"],
-        signature=base_event_configs["UnopenedCommitmentStored"]["signature"],
-        column_mapping=base_event_configs["UnopenedCommitmentStored"]["column_mapping"],
+        name=mev_commit_config["UnopenedCommitmentStored"].name,
+        signature=mev_commit_config["UnopenedCommitmentStored"].signature,
+        column_mapping=mev_commit_config["UnopenedCommitmentStored"].column_mapping,
     )
 
     commits_processed_config = EventConfig(
-        name=base_event_configs["CommitmentProcessed"]["name"],
-        signature=base_event_configs["CommitmentProcessed"]["signature"],
-        column_mapping=base_event_configs["CommitmentProcessed"]["column_mapping"],
+        name=mev_commit_config["CommitmentProcessed"].name,
+        signature=mev_commit_config["CommitmentProcessed"].signature,
+        column_mapping=mev_commit_config["CommitmentProcessed"].column_mapping,
     )
 
     # Query events using the event configuration and return the result as a Polars DataFrame
