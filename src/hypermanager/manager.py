@@ -16,8 +16,7 @@ class HyperManager:
     client: hypersync.HypersyncClient = field(init=False)
 
     def __post_init__(self):
-        self.client = hypersync.HypersyncClient(
-            hypersync.ClientConfig(url=self.url))
+        self.client = hypersync.HypersyncClient(hypersync.ClientConfig(url=self.url))
 
     def __hash__(self):
         return hash(self.url)  # Make the object hashable based on URL
@@ -173,7 +172,7 @@ class HyperManager:
         else:
             return decoded_logs_df
 
-    async def get_block_range(
+    async def _get_block_range(
         self,
         from_block: Optional[int] = None,
         to_block: Optional[int] = None,
@@ -191,8 +190,7 @@ class HyperManager:
             dict[str, int]: A dictionary containing 'from_block' and 'to_block'.
         """
         to_block = to_block or await self._get_height()
-        from_block = from_block or (
-            to_block - block_range if block_range else 0)
+        from_block = from_block or (to_block - block_range if block_range else 0)
         return {"from_block": from_block, "to_block": to_block}
 
     def _create_event_query(
@@ -205,7 +203,7 @@ class HyperManager:
         """
         Create a query for a specific event based on the event signature.
 
-        If the `contract` in the `EventConfig` class is None, then the query will use wildcard indexing to find the 
+        If the `contract` in the `EventConfig` class is None, then the query will use wildcard indexing to find the
         event logs. See docs here - https://docs.envio.dev/docs/HyperIndex/wildcard-indexing
 
 
@@ -232,17 +230,14 @@ class HyperManager:
             return self._create_query(
                 from_block=from_block,
                 to_block=to_block,
-                logs=[
-                    hypersync.LogSelection(topics=topics)
-                ],
+                logs=[hypersync.LogSelection(topics=topics)],
             )
 
         return self._create_query(
             from_block=from_block,
             to_block=to_block,
             logs=[
-                hypersync.LogSelection(
-                    address=[event_config.contract], topics=topics)
+                hypersync.LogSelection(address=[event_config.contract], topics=topics)
             ],
         )
 
@@ -261,7 +256,7 @@ class HyperManager:
         """
         Execute a query for a specific event by its signature and collect the data.
 
-        If the `contract` in the `EventConfig` class is None, then the query will use wildcard indexing to find the 
+        If the `contract` in the `EventConfig` class is None, then the query will use wildcard indexing to find the
         event logs. See docs here - https://docs.envio.dev/docs/HyperIndex/wildcard-indexing
 
 
@@ -282,7 +277,9 @@ class HyperManager:
             ValueError: If no data is returned for the specified event name or if the query range is invalid.
         """
         # Determine the block range for the query
-        block_range_dict = await self.get_block_range(from_block, to_block, block_range)
+        block_range_dict = await self._get_block_range(
+            from_block, to_block, block_range
+        )
 
         # Create the query object for the specified event
         query = self._create_event_query(
@@ -335,7 +332,9 @@ class HyperManager:
         Returns:
             Optional[pl.DataFrame]: The collected blocks and transactions data as a Polars DataFrame, or None if no data is returned.
         """
-        block_range_dict = await self.get_block_range(from_block, to_block, block_range)
+        block_range_dict = await self._get_block_range(
+            from_block, to_block, block_range
+        )
 
         query = self._create_query(
             from_block=block_range_dict["from_block"],
@@ -371,7 +370,7 @@ class HyperManager:
         if isinstance(txs, str):
             txs = [txs]  # Convert single string to a list
 
-        block_range_dict = await self.get_block_range(from_block=None)
+        block_range_dict = await self._get_block_range(from_block=None)
 
         query = self._create_query(
             from_block=0,
@@ -411,7 +410,9 @@ class HyperManager:
             Optional[pl.DataFrame]: The collected block data as a Polars DataFrame, or None if no data is returned.
         """
         # Get the block range to query
-        block_range_dict = await self.get_block_range(from_block, to_block, block_range)
+        block_range_dict = await self._get_block_range(
+            from_block, to_block, block_range
+        )
 
         # Create a query for blocks only
         query = self._create_query(
