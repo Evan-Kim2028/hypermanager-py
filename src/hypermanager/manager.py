@@ -21,7 +21,6 @@ class HyperManager:
     def __hash__(self):
         return hash(self.url)  # Make the object hashable based on URL
 
-    @lru_cache(maxsize=128)
     async def _get_height(self) -> int:
         """
         Get the current block height from the blockchain.
@@ -189,8 +188,11 @@ class HyperManager:
         Returns:
             dict[str, int]: A dictionary containing 'from_block' and 'to_block'.
         """
-        to_block = to_block or await self._get_height()
+        if to_block is None:
+            to_block = await self._get_height()  # Await only once
+
         from_block = from_block or (to_block - block_range if block_range else 0)
+
         return {"from_block": from_block, "to_block": to_block}
 
     def _create_event_query(
