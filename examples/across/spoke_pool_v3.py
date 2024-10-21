@@ -53,10 +53,10 @@ async def get_events():
             try:
                 # Dynamically create an EventConfig for each event using the base event configuration
                 event_config = EventConfig(
-                    name=base_event_config["name"],
-                    signature=base_event_config["signature"],
+                    name=base_event_config.name,
+                    signature=base_event_config.signature,
                     contract=spoke_pool_address.value,
-                    column_mapping=base_event_config["column_mapping"],
+                    column_mapping=base_event_config.column_mapping,
                 )
 
                 # Initialize the HyperManager with the hypersync URL
