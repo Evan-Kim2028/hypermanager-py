@@ -11,6 +11,10 @@ mev_commit_config = {
         column_mapping=ColumnMapping(
             transaction=COMMON_TRANSACTION_MAPPING, block=COMMON_BLOCK_MAPPING
         ),
+        decoded_log={
+            "blockNumber": DataType.INT64,
+            "window": DataType.INT64,
+        },
     ),
     "CommitmentProcessed": EventConfig(
         name="CommitmentProcessed",
