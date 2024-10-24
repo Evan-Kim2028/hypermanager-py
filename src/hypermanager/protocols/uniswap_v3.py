@@ -20,4 +20,16 @@ uniswap_config = {
             },
         ),
     ),
+    "PoolCreated": EventConfig(
+        name="PoolCreated",
+        signature="PoolCreated(address indexed token0, address indexed token1, uint24 indexed fee, int24 tickSpacing, address pool)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+            decoded_log={
+                "fee": DataType.FLOAT64,
+                "tickSpacing": DataType.FLOAT64,
+            },
+        ),
+    ),
 }

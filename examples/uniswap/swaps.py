@@ -26,14 +26,25 @@ async def get_events():
 
     try:
         # Query events using the event configuration and return the result as a Polars DataFrame
-        df: pl.DataFrame = await manager.execute_event_query(
+        swaps_df: pl.DataFrame = await manager.execute_event_query(
             uniswap_config["Swap"],  # loads the swap event config
             tx_data=True,  # auto joins transaction and block data to the event
             block_range=10_000,  # query the most recent 10,000 blocks from the chain
         )
-        print(df.columns)
-        print(df.shape)
-        print(df.head(5))
+        print(f'queried {swaps_df.shape[0]} rows from {uniswap_config["Swap"].name}')
+        print(swaps_df.columns)
+        print(swaps_df.head(5))
+
+        pools_df: pl.DataFrame = await manager.execute_event_query(
+            uniswap_config["PoolCreated"],
+            tx_data=True,
+            block_range=10_000,
+        )
+        print(
+            f'queried {pools_df.shape[0]} rows from {uniswap_config["PoolCreated"].name}'
+        )
+        print(pools_df.columns)
+        print(pools_df.head(5))
     # Handle any exceptions that occur during the query process
     except Exception as e:
         print(f"Error querying {uniswap_config["Swap"].name}: {e}")
