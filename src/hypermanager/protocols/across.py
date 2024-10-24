@@ -27,9 +27,9 @@ client_config = {
     HyperSyncClients.SCROLL: SpokePoolAddresses.SCROLL,
 }
 
-# Base event configurations as a list of EventConfig instances
-across_config = [
-    EventConfig(
+# Base event configurations as a dictionary with event names as keys
+across_config = {
+    "V3FundsDeposited": EventConfig(
         name="V3FundsDeposited",
         signature=(
             "V3FundsDeposited(address inputToken,address outputToken,uint256 inputAmount,"
@@ -38,6 +38,8 @@ across_config = [
             "address indexed depositor,address recipient,address exclusiveRelayer,bytes message)"
         ),
         column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
             decoded_log={
                 "inputAmount": DataType.FLOAT64,
                 "outputAmount": DataType.FLOAT64,
@@ -47,11 +49,9 @@ across_config = [
                 "destinationChainId": DataType.UINT64,
                 "depositId": DataType.UINT64,
             },
-            transaction=COMMON_TRANSACTION_MAPPING,
-            block=COMMON_BLOCK_MAPPING,
         ),
     ),
-    EventConfig(
+    "RequestedSpeedUpV3Deposit": EventConfig(
         name="RequestedSpeedUpV3Deposit",
         signature=(
             "RequestedSpeedUpV3Deposit(uint256 updatedOutputAmount,uint32 indexed depositId,"
@@ -59,15 +59,15 @@ across_config = [
             "bytes depositorSignature)"
         ),
         column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
             decoded_log={
                 "updatedOutputAmount": DataType.INT64,
                 "depositId": DataType.UINT64,
             },
-            transaction=COMMON_TRANSACTION_MAPPING,
-            block=COMMON_BLOCK_MAPPING,
         ),
     ),
-    EventConfig(
+    "FilledV3Relay": EventConfig(
         name="FilledV3Relay",
         signature=(
             "FilledV3Relay(address inputToken,address outputToken,uint256 inputAmount,"
@@ -77,6 +77,8 @@ across_config = [
             "address recipient,bytes message,V3RelayExecutionEventInfo relayExecutionInfo)"
         ),
         column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
             decoded_log={
                 "inputAmount": DataType.FLOAT64,
                 "outputAmount": DataType.FLOAT64,
@@ -87,11 +89,9 @@ across_config = [
                 "repaymentChainId": DataType.UINT64,
                 "depositId": DataType.UINT64,
             },
-            transaction=COMMON_TRANSACTION_MAPPING,
-            block=COMMON_BLOCK_MAPPING,
         ),
     ),
-    EventConfig(
+    "RequestedV3SlowFill": EventConfig(
         name="RequestedV3SlowFill",
         signature=(
             "RequestedV3SlowFill(address inputToken,address outputToken,uint256 inputAmount,"
@@ -100,6 +100,8 @@ across_config = [
             "address depositor,address recipient,bytes message)"
         ),
         column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
             decoded_log={
                 "inputAmount": DataType.FLOAT64,
                 "outputAmount": DataType.FLOAT64,
@@ -107,8 +109,6 @@ across_config = [
                 "fillDeadline": DataType.UINT64,
                 "originChainId": DataType.UINT64,
             },
-            transaction=COMMON_TRANSACTION_MAPPING,
-            block=COMMON_BLOCK_MAPPING,
         ),
     ),
-]
+}

@@ -48,54 +48,34 @@ async def get_events():
         print(f"Querying events for {client.name}...")
         print(f"SpokePool Address: {spoke_pool_address.value}")
 
-        # Loop through the base event configurations to query specific events
-        for base_event_config in across_config:
+        # **Modified Loop**: Iterate over the values of the across_config dictionary
+        for base_event_config in across_config.values():
             try:
-                # Dynamically create an EventConfig for each event using the base event configuration
-                event_config = EventConfig(
-                    name=base_event_config.name,
-                    signature=base_event_config.signature,
-                    contract=spoke_pool_address.value,
-                    column_mapping=base_event_config.column_mapping,
-                )
-
                 # Initialize the HyperManager with the hypersync URL
                 manager = HyperManager(url=client.client)
 
                 # Query events using the event configuration and return the result as a Polars DataFrame
                 df: pl.DataFrame = await manager.execute_event_query(
-                    event_config,
-                    save_data=True,
+                    base_event_config,
+                    # save_data=True,
                     tx_data=True,
                     block_range=10_000,  # query the most recent 10,000 blocks from each chain
                 )
 
                 # Check if any events were found
                 if df.is_empty():
-                    print(f"No events found for {event_config.name} on {
-                          client.name}, continuing...")
+                    print(
+                        f"No events found for {base_event_config.name} on {client.name}, continuing..."
+                    )
                     continue  # Move to the next event if none found
 
                 # Process the DataFrame if events are found
-                print(f"Events found for {
-                      event_config.name} on {client.name}:")
+                print(f"Events found for {base_event_config.name} on {client.name}:")
                 print(df.shape)  # Print the number of rows and columns
-
-                # Define the folder path for saving event data files
-                folder_path = f"data/across/{client.name}"
-
-                # Create the folder if it doesn't exist
-                if not os.path.exists(folder_path):
-                    os.makedirs(folder_path)
-
-                # Save the events as a Parquet file
-                df.write_parquet(
-                    f"{folder_path}/{event_config.name}_{client.name}.parquet"
-                )
 
             # Handle any exceptions that occur during the query process
             except Exception as e:
-                print(f"Error querying {event_config.name} on {
+                print(f"Error querying {base_event_config.name} on {
                       client.name}: {e}")
 
 
