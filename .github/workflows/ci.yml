@@ -13,27 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the repository
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Install Rye using the pre-built action
+      # Install Rye and Python
       - name: Install Rye
-        uses: sbarrios93/rye-rust-action@v1
-        id: rye-installer
+        uses: phi-friday/install-rye@v2
+        with:
+          rye_version: "latest" # Optional: specify a version if desired
+          python_version: "3.12.5" # Ensure alignment with your Python setup
 
-      # 3. Show the installed Rye version
-      - name: Show Rye version
-        run: |
-          echo "Installed Rye commit hash: ${{ steps.rye-installer.outputs.rye_commit_hash }}"
-          rye --version
-
-      # 4. Sync dependencies with Rye
+      # Sync dependencies with Rye
       - name: Sync dependencies
         run: |
           rye sync
 
-      # 5. Run tests (add this if you want to run tests after syncing)
+      # Run tests
       - name: Run tests
         run: |
           rye run pytest
