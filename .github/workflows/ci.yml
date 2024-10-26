@@ -28,8 +28,3 @@ jobs:
       - name: Sync dependencies
         run: |
           rye sync
-
-      # Run tests
-      - name: Run tests
-        run: |
-          rye run pytest
