@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - uses: actions/checkout@v3
+
+      # 2. Set up Python 3.12
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 3. Install Rye
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | bash --yes
+
+      # 4. Configure Rye for global shims
+      - name: Configure Rye
+        run: |
+          rye config --set-bool behavior.global-python=true
+          echo 'source "$HOME/.rye/env"' >> $HOME/.profile
+        shell: bash
+
+      # 5. Add Rye shims and bin to PATH
+      - name: Add Rye to PATH
+        run: |
+          echo "$HOME/.rye/shims" >> $GITHUB_PATH
+          echo "$HOME/.rye/bin" >> $GITHUB_PATH
+
+      # 6. Build the virtual environment using Rye
+      - name: Build virtual environment
+        run: |
+          rye sync
+
+      # 7. Run tests using Rye-managed pytest
+      - name: Run tests
+        run: |
+          rye run pytest
