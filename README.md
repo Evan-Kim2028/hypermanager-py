@@ -1,5 +1,5 @@
 # hypermanager-py
-`hypermanager-py` is an orchestration manager built ontop of the [hypersync python client](https://github.com/enviodev/hypersync-client-python). It is designed to manage block, transaction, and log queries across multiple envio-indexed chains.
+`hypermanager-py` is an orchestration manager built ontop of the [hypersync python client](https://github.com/enviodev/hypersync-client-python). It makes cross-chain log queries easy to manage and works with blocks and transactions data as well.
 
 
 ## Installation
