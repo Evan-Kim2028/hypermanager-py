@@ -2,48 +2,38 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
-  build:
+  rye-build:
     runs-on: ubuntu-latest
 
     steps:
       # 1. Checkout the repository
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # 2. Set up Python 3.12
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-
-      # 3. Install Rye
+      # 2. Install Rye using the pre-built action
       - name: Install Rye
-        run: |
-          curl -sSf https://rye.astral.sh/get | bash -s -- --yes </dev/null
- 
-      # 4. Configure Rye for global shims
-      - name: Configure Rye
-        run: |
-          rye config --set-bool behavior.global-python=true
-          echo 'source "$HOME/.rye/env"' >> $HOME/.profile
-        shell: bash
+        uses: sbarrios93/rye-rust-action@v1
+        id: rye-installer
 
-      # 5. Add Rye shims and bin to PATH
-      - name: Add Rye to PATH
+      # 3. Show the installed Rye version
+      - name: Show Rye version
         run: |
-          echo "$HOME/.rye/shims" >> $GITHUB_PATH
-          echo "$HOME/.rye/bin" >> $GITHUB_PATH
+          echo "Installed Rye commit hash: ${{ steps.rye-installer.outputs.rye_commit_hash }}"
+          rye --version
 
-      # 6. Build the virtual environment using Rye
-      - name: Build virtual environment
+      # 4. Sync dependencies with Rye
+      - name: Sync dependencies
         run: |
           rye sync
 
-      # 7. Run tests using Rye-managed pytest
+      # 5. Run tests (add this if you want to run tests after syncing)
       - name: Run tests
         run: |
           rye run pytest
