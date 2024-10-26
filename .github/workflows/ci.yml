@@ -22,10 +22,8 @@ jobs:
 
       # 3. Install Rye
       - name: Install Rye
-        env:
-          RYE_INSTALL_OPTION: "--yes"  # Skips all prompts during installation
         run: |
-          curl -sSf https://rye.astral.sh/get | bash -s $RYE_INSTALL_OPTION
+          curl -sSf https://rye.astral.sh/get | bash -s -- --yes
 
       # 4. Configure Rye for global shims
       - name: Configure Rye
