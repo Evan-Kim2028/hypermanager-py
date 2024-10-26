@@ -23,7 +23,9 @@ jobs:
       # 3. Install Rye
       - name: Install Rye
         run: |
-          curl -sSf https://rye.astral.sh/get | bash -s -- --yes
+          export RYE_INSTALL_OPTION="--yes"
+          export RYE_HOME="/home/runner/.rye"
+          curl -sSf https://rye.astral.sh/get | bash
 
       # 4. Configure Rye for global shims
       - name: Configure Rye
