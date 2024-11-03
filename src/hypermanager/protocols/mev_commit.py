@@ -3,7 +3,7 @@ from hypersync import ColumnMapping, DataType
 from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 
 
-# Base event configurations as a dictionary with event names as keys
+# mev_commit logs config for v0.6.0
 mev_commit_config = {
     "NewL1Block": EventConfig(
         name="NewL1Block",
@@ -137,6 +137,10 @@ mev_commit_config = {
             block=COMMON_BLOCK_MAPPING,
         ),
     ),
+}
+
+# validator config for mev_commit v0.6.0
+mev_commit_validator_config = {
     "Staked_old": EventConfig(
         name="Staked_old",
         signature="Staked(address indexed txOriginator, bytes valBLSPubKey, uint256 amount)",
@@ -208,6 +212,239 @@ mev_commit_config = {
         signature="SlashAmountSet(address indexed msgSender, uint256 newSlashAmount)",
         column_mapping=ColumnMapping(
             decoded_log={"newSlashAmount": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "SlashOracleSet": EventConfig(
+        name="SlashOracleSet",
+        signature="SlashOracleSet(address indexed msgSender, address newSlashOracle)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "SlashReceiverSet": EventConfig(
+        name="SlashReceiverSet",
+        signature="SlashReceiverSet(address indexed msgSender, address newSlashReceiver)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "UnstakePeriodBlocksSet": EventConfig(
+        name="UnstakePeriodBlocksSet",
+        signature="UnstakePeriodBlocksSet(address indexed msgSender, uint256 newUnstakePeriodBlocks)",
+        column_mapping=ColumnMapping(
+            decoded_log={"newUnstakePeriodBlocks": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "VanillaRegistrySet": EventConfig(
+        name="VanillaRegistrySet",
+        signature="VanillaRegistrySet(address oldContract, address newContract)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "MevCommitAVSSet": EventConfig(
+        name="MevCommitAVSSet",
+        signature="VanillaRegistrySet(address oldContract, address newContract)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "OperatorRegistered": EventConfig(
+        name="OperatorRegistered",
+        signature="OperatorRegistered(address indexed operator)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "OperatorDeregistrationRequested": EventConfig(
+        name="OperatorDeregistrationRequested",
+        signature="OperatorDeregistrationRequested(address indexed operator)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "OperatorDeregistered": EventConfig(
+        name="OperatorDeregistered",
+        signature="OperatorDeregistered(address indexed operator)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "ValidatorRegistered": EventConfig(
+        name="ValidatorRegistered",
+        signature="ValidatorRegistered(bytes validatorPubKey, address indexed podOwner)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "ValidatorDeregistrationRequested": EventConfig(
+        name="ValidatorDeregistrationRequested",
+        signature="ValidatorDeregistrationRequested(bytes validatorPubKey, address indexed podOwner)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "ValidatorDeregistered": EventConfig(
+        name="ValidatorDeregistered",
+        signature="ValidatorDeregistered(bytes validatorPubKey, address indexed podOwner)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "LSTRestakerRegistered": EventConfig(
+        name="LSTRestakerRegistered",
+        signature="LSTRestakerRegistered(bytes chosenValidator, uint256 numChosen, address indexed lstRestaker)",
+        column_mapping=ColumnMapping(
+            decoded_log={"numChosen": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "LSTRestakerDeregistrationRequested": EventConfig(
+        name="LSTRestakerDeregistrationRequested",
+        signature="LSTRestakerDeregistrationRequested(bytes chosenValidator, uint256 numChosen, address indexed lstRestaker)",
+        column_mapping=ColumnMapping(
+            decoded_log={"numChosen": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "LSTRestakerDeregistered": EventConfig(
+        name="LSTRestakerDeregistered",
+        signature="LSTRestakerDeregistered(bytes chosenValidator, uint256 numChosen, address indexed lstRestaker)",
+        column_mapping=ColumnMapping(
+            decoded_log={"numChosen": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "ValidatorFrozen": EventConfig(
+        name="ValidatorFrozen",
+        signature="ValidatorFrozen(bytes validatorPubKey, address indexed podOwner)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "ValidatorUnfrozen": EventConfig(
+        name="ValidatorUnfrozen",
+        signature="ValidatorUnfrozen(bytes validatorPubKey, address indexed podOwner)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "AVSDirectorySet": EventConfig(
+        name="AVSDirectorySet",
+        signature="AVSDirectorySet(address indexed avsDirectory)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "StrategyManagerSet": EventConfig(
+        name="StrategyManagerSet",
+        signature="StrategyManagerSet(address indexed strategyManager)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "DelegationManagerSet": EventConfig(
+        name="DelegationManagerSet",
+        signature="DelegationManagerSet(address indexed delegationManager)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "EigenPodManagerSet": EventConfig(
+        name="EigenPodManagerSet",
+        signature="EigenPodManagerSet(address indexed eigenPodManager)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "RestakeableStrategiesSet": EventConfig(
+        name="RestakeableStrategiesSet",
+        signature="RestakeableStrategiesSet(address[] indexed restakeableStrategies)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "FreezeOracleSet": EventConfig(
+        name="FreezeOracleSet",
+        signature="FreezeOracleSet(address indexed freezeOracle)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "UnfreezeFeeSet": EventConfig(
+        name="UnfreezeFeeSet",
+        signature="UnfreezeFeeSet(uint256 unfreezeFee)",
+        column_mapping=ColumnMapping(
+            decoded_log={"unfreezeFee": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "UnfreezeReceiverSet": EventConfig(
+        name="UnfreezeReceiverSet",
+        signature="UnfreezeReceiverSet(address indexed unfreezeReceiver)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "UnfreezePeriodBlocksSet": EventConfig(
+        name="UnfreezePeriodBlocksSet",
+        signature="UnfreezePeriodBlocksSet(uint256 unfreezePeriodBlocks)",
+        column_mapping=ColumnMapping(
+            decoded_log={"unfreezePeriodBlocks": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "OperatorDeregPeriodBlocksSet": EventConfig(
+        name="OperatorDeregPeriodBlocksSet",
+        signature="OperatorDeregPeriodBlocksSet(uint256 operatorDeregPeriodBlocks)",
+        column_mapping=ColumnMapping(
+            decoded_log={"operatorDeregPeriodBlocks": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "ValidatorDeregPeriodBlocksSet": EventConfig(
+        name="ValidatorDeregPeriodBlocksSet",
+        signature="ValidatorDeregPeriodBlocksSet(uint256 validatorDeregPeriodBlocks)",
+        column_mapping=ColumnMapping(
+            decoded_log={"validatorDeregPeriodBlocks": DataType.UINT64},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+    "LSTRestakerDeregPeriodBlocksSet": EventConfig(
+        name="LSTRestakerDeregPeriodBlocksSet",
+        signature="LSTRestakerDeregPeriodBlocksSet(uint256 lstRestakerDeregPeriodBlocks)",
+        column_mapping=ColumnMapping(
+            decoded_log={"lstRestakerDeregPeriodBlocks": DataType.UINT64},
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
         ),
