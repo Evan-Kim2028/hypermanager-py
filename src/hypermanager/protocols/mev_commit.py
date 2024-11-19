@@ -3,8 +3,9 @@ from hypersync import ColumnMapping, DataType
 from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 
 
-# mev_commit logs config for v0.6.0
+
 mev_commit_config = {
+    # mev_commit logs config as of v0.6.0
     "NewL1Block": EventConfig(
         name="NewL1Block",
         signature="NewL1Block(uint256 indexed blockNumber,address indexed winner,uint256 indexed window)",
@@ -29,8 +30,8 @@ mev_commit_config = {
         signature="BidderRegistered(address indexed bidder, uint256 depositedAmount, uint256 windowNumber)",
         column_mapping=ColumnMapping(
             decoded_log={
-                "depositedAmount": DataType.INT64,
-                "windowNumber": DataType.INT64,
+                "depositedAmount": DataType.FLOAT64,
+                "windowNumber": DataType.FLOAT64,
             },
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
@@ -137,6 +138,75 @@ mev_commit_config = {
             block=COMMON_BLOCK_MAPPING,
         ),
     ),
+    # Events added from v0.7.0
+    "OpenedCommitmentStoredv2": EventConfig(
+        name="OpenedCommitmentStoredv2",
+        signature=(
+            "OpenedCommitmentStored(bytes32 indexed commitmentIndex, address bidder, address committer, "
+            "uint256 bidAmt, uint64 blockNumber, bytes32 bidHash, uint64 decayStartTimeStamp, "
+            "uint64 decayEndTimeStamp, string txnHash, string revertingTxHashes, bytes32 commitmentHash, "
+            "bytes bidSignature, bytes commitmentSignature, uint64 dispatchTimestamp, bytes sharedSecretKey)"
+        ),
+        column_mapping=ColumnMapping(
+            decoded_log={
+                "bidAmt": DataType.UINT64,
+                "blockNumber": DataType.UINT64,
+                "decayStartTimeStamp": DataType.UINT64,
+                "decayEndTimeStamp": DataType.UINT64,
+                "dispatchTimestamp": DataType.UINT64,
+            },
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+
+    # OracleContractUpdated with indexed newOracleContract
+    "OracleContractUpdatedv2": EventConfig(
+        name="OracleContractUpdatedv2",
+        signature="OracleContractUpdated(address indexed newOracleContract)",
+        column_mapping=ColumnMapping(
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+
+    # New event from iBidderRegistry.sol and iProviderRegistry.sol
+    "TransferToBidderFailed": EventConfig(
+        name="TransferToBidderFailed",
+        signature="TransferToBidderFailed(address indexed bidder, uint256 amount)",
+        column_mapping=ColumnMapping(
+            decoded_log={
+                "amount": DataType.UINT64,
+            },
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+
+    # New event from iProviderRegistry.sol
+    "BidderWithdrawSlashedAmount": EventConfig(
+        name="BidderWithdrawSlashedAmount",
+        signature="BidderWithdrawSlashedAmount(address indexed bidder, uint256 amount)",
+        column_mapping=ColumnMapping(
+            decoded_log={
+                "amount": DataType.UINT64,
+            },
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    ),
+
+    # New event from blockTracker.sol
+    "BuilderAddressAdded": EventConfig(
+        name="BuilderAddressAdded",
+        signature="BuilderAddressAdded(string indexed builderName, address indexed builderAddress)",
+        column_mapping=ColumnMapping(
+            # No non-indexed fields
+            decoded_log={},
+            transaction=COMMON_TRANSACTION_MAPPING,
+            block=COMMON_BLOCK_MAPPING,
+        ),
+    )
 }
 
 # validator config for mev_commit v0.6.0
