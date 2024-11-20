@@ -3,7 +3,6 @@ from hypersync import ColumnMapping, DataType
 from hypermanager.schema import COMMON_TRANSACTION_MAPPING, COMMON_BLOCK_MAPPING
 
 
-
 mev_commit_config = {
     # mev_commit logs config as of v0.6.0
     "NewL1Block": EventConfig(
@@ -27,7 +26,7 @@ mev_commit_config = {
     ),
     "BidderRegistered": EventConfig(
         name="BidderRegistered",
-        signature="BidderRegistered(address indexed bidder, uint256 depositedAmount, uint256 windowNumber)",
+        signature="BidderRegistered(address indexed bidder, uint256 indexed depositedAmount, uint256 indexed windowNumber)",
         column_mapping=ColumnMapping(
             decoded_log={
                 "depositedAmount": DataType.FLOAT64,
@@ -39,7 +38,7 @@ mev_commit_config = {
     ),
     "BidderWithdrawal": EventConfig(
         name="BidderWithdrawal",
-        signature="BidderWithdrawal(address indexed bidder, uint256 window, uint256 amount)",
+        signature="BidderWithdrawal(address indexed bidder, uint256 indexed window, uint256 indexed amount)",
         column_mapping=ColumnMapping(
             decoded_log={
                 "amount": DataType.INT64,
@@ -57,6 +56,8 @@ mev_commit_config = {
             "uint64 decayEndTimeStamp, string txnHash, string revertingTxHashes, bytes32 commitmentHash, "
             "bytes bidSignature, bytes commitmentSignature, uint64 dispatchTimestamp, bytes sharedSecretKey)"
         ),
+        # v0.6.0? Wasn't able to confirm
+        contract='0xCAC68D97a56b19204Dd3dbDC103CB24D47A825A3',
         column_mapping=ColumnMapping(
             decoded_log={
                 "bid": DataType.UINT64,
@@ -71,7 +72,7 @@ mev_commit_config = {
     ),
     "FundsRetrieved": EventConfig(
         name="FundsRetrieved",
-        signature="FundsRetrieved(bytes32 indexed commitmentDigest,address indexed bidder,uint256 window,uint256 amount)",
+        signature="FundsRetrieved(bytes32 indexed commitmentDigest,address indexed bidder,uint256 indexed window,uint256 amount)",
         column_mapping=ColumnMapping(
             decoded_log={
                 "window": DataType.UINT64,
@@ -147,6 +148,8 @@ mev_commit_config = {
             "uint64 decayEndTimeStamp, string txnHash, string revertingTxHashes, bytes32 commitmentHash, "
             "bytes bidSignature, bytes commitmentSignature, uint64 dispatchTimestamp, bytes sharedSecretKey)"
         ),
+        # Specify the contract address because v0.6 and v0.7 have same signatures but different contract addresses.
+        contract='0x9433bCD9e89F923ce587f7FA7E39e120E93eb84D',
         column_mapping=ColumnMapping(
             decoded_log={
                 "bidAmt": DataType.UINT64,
