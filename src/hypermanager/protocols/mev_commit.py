@@ -226,8 +226,10 @@ mev_commit_validator_config = {
     "Staked": EventConfig(
         name="Staked",
         signature="Staked(address indexed msgSender, address indexed withdrawalAddress, bytes valBLSPubKey, uint256 amount)",
+        # version v.7.0 https://holesky.etherscan.io/address/0x87d5f694fad0b6c8aabca96277de09451e277bcf
+        # contract="0x87D5F694fAD0b6C8aaBCa96277DE09451E277Bcf",
         column_mapping=ColumnMapping(
-            decoded_log={"amount": DataType.UINT64},
+            decoded_log={"amount": DataType.FLOAT64},
             transaction=COMMON_TRANSACTION_MAPPING,
             block=COMMON_BLOCK_MAPPING,
         ),
